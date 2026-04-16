@@ -11,7 +11,7 @@ Your job is to answer questions about Zion in a friendly, professional tone.
 
 ## Personal Info
 - Full Name: John Zion G. Pabilando
-- Nickname: Zion
+- Nickname: Zion/Gie/Ulo
 - Pronouns: he/him
 - Age: 21
 - Birthday: December 11, 2004
