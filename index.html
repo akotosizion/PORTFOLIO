@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menu">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#e6edf3">
+            <path
+              d="M1 2.75A.75.75 0 0 1 1.75 2h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 2.75Zm0 5A.75.75 0 0 1 1.75 7h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 7.75ZM1.75 12h12.5a.75.75 0 0 1 0 1.5H1.75a.75.75 0 0 1 0-1.5Z">
+            </path>
+          </svg>
+        </button>
+        <a href="#" class="gh-logo" aria-label="Homepage">
+          <svg height="32" viewBox="0 0 16 16" width="32" fill="#e6edf3">
+            <path
+              d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z">
+            </path>
+          </svg>
+        </a>
+        <span class="top-bar-username">Zion</span>
+      </div>
+
+      <div class="top-bar-center">
+        <div class="search-box">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#7d8590">
+            <path
+              d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215ZM11.5 7a4.499 4.499 0 1 0-8.997 0A4.499 4.499 0 0 0 11.5 7Z">
+            </path>
+          </svg>
+          <span class="search-text">Type <kbd>/</kbd> to search</span>
+        </div>
+      </div>
+
+      <div class="top-bar-right">
+        <button class="icon-btn create-btn" aria-label="Create new">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#e6edf3">
+            <path
+              d="M7.75 2a.75.75 0 0 1 .75.75V7h4.25a.75.75 0 0 1 0 1.5H8.5v4.25a.75.75 0 0 1-1.5 0V8.5H2.75a.75.75 0 0 1 0-1.5H7V2.75A.75.75 0 0 1 7.75 2Z">
+            </path>
+          </svg>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#e6edf3" class="dropdown-caret">
+            <path
+              d="m4.427 7.427 3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 7H4.604a.25.25 0 0 0-.177.427Z">
+            </path>
+          </svg>
+        </button>
+        <button class="icon-btn" aria-label="Issues">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#e6edf3">
+            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path>
+            <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"></path>
+          </svg>
+        </button>
+        <button class="icon-btn" aria-label="Pull requests">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#e6edf3">
+            <path
+              d="M1.5 3.25a2.25 2.25 0 1 1 3 2.122v5.256a2.251 2.251 0 1 1-1.5 0V5.372A2.25 2.25 0 0 1 1.5 3.25Zm5.677-.177L9.573.677A.25.25 0 0 1 10 .854V2.5h1A2.5 2.5 0 0 1 13.5 5v5.628a2.251 2.251 0 1 1-1.5 0V5a1 1 0 0 0-1-1h-1v1.646a.25.25 0 0 1-.427.177L7.177 3.427a.25.25 0 0 1 0-.354ZM3.75 2.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm0 9.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm8.25.75a.75.75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0Z">
+            </path>
+          </svg>
+        </button>
+        <button class="icon-btn notification-btn" aria-label="Notifications">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#e6edf3">
+            <path
+              d="M8 16a2 2 0 0 0 1.985-1.75c.017-.137-.097-.25-.235-.25h-3.5c-.138 0-.252.113-.235.25A2 2 0 0 0 8 16ZM3 5a5 5 0 0 1 10 0v2.947c0 .05.015.098.042.139l1.703 2.555A1.519 1.519 0 0 1 13.482 13H2.518a1.516 1.516 0 0 1-1.263-2.36l1.703-2.554A.255.255 0 0 0 3 7.947Zm5-3.5A3.5 3.5 0 0 0 4.5 5v2.947c0 .346-.102.683-.294.97l-1.703 2.556a.017.017 0 0 0-.003.01l.001.006c0 .002.002.004.004.006l.006.004.007.001h10.964l.007-.001.006-.004.004-.006.001-.007a.017.017 0 0 0-.003-.01l-1.703-2.554a1.745 1.745 0 0 1-.294-.97V5A3.5 3.5 0 0 0 8 1.5Z">
+            </path>
+          </svg>
+        </button>
+        <div class="nav-avatar">
+          <img src="assets/profile.jpg" alt="Profile" class="nav-profile-pic" />
+        </div>
+      </div>
+    </div>
+
+    <nav class="tab-bar">
+      <ul class="tab-list">
+        <li><a href="#overview" class="tab-item">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="#e6edf3">
+              <path
+                d="M0 1.75A.75.75 0 0 1 .75 1h4.253c1.227 0 2.317.59 3 1.501A3.743 3.743 0 0 1 11.006 1h4.245a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-.75.75h-4.507a2.25 2.25 0 0 0-1.591.659l-.622.621a.75.75 0 0 1-1.06 0l-.622-.621A2.25 2.25 0 0 0 5.258 13H.75a.75.75 0 0 1-.75-.75Zm7.251 10.324.004-5.073-.002-2.253A2.25 2.25 0 0 0 5.003 2.5H1.5v9h3.757a3.75 3.75 0 0 1 1.994.574ZM8.755 4.75l-.004 7.322a3.752 3.752 0 0 1 1.992-.572H14.5v-9h-3.495a2.25 2.25 0 0 0-2.25 2.25Z">
+              </path>
+            </svg>
+            Overview
+          </a></li>
+        <li><a href="#repositories" class="tab-item active">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="#e6edf3">
+              <path
+                d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z">
+              </path>
+            </svg>
+            Repositories <span class="tab-count">3</span>
+          </a></li>
+        <li><a href="#projects" class="tab-item">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="#e6edf3">
+              <path
+                d="M1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25V1.75C0 .784.784 0 1.75 0ZM1.5 1.75v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25ZM11.75 3a.75.75 0 0 1 .75.75v7.5a.75.75 0 0 1-1.5 0v-7.5a.75.75 0 0 1 .75-.75Zm-8.25.75a.75.75 0 0 1 1.5 0v5.5a.75.75 0 0 1-1.5 0ZM8 3a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 3Z">
+              </path>
+            </svg>
+            Projects
+          </a></li>
+        <li><a href="#packages" class="tab-item">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="#e6edf3">
+              <path
+                d="m8.878.392 5.25 3.045c.54.314.872.89.872 1.514v6.098a1.75 1.75 0 0 1-.872 1.514l-5.25 3.045a1.75 1.75 0 0 1-1.756 0l-5.25-3.045A1.75 1.75 0 0 1 1 11.049V4.951c0-.624.332-1.201.872-1.514L7.122.392a1.75 1.75 0 0 1 1.756 0ZM7.875 1.69l-4.63 2.685L8 7.133l4.755-2.758-4.63-2.685a.248.248 0 0 0-.25 0ZM2.5 5.677v5.372c0 .09.047.171.125.216l4.625 2.683V8.432Zm6.25 8.271 4.625-2.683a.25.25 0 0 0 .125-.216V5.677L8.75 8.432Z">
+              </path>
+            </svg>
+            Packages
+          </a></li>
+        <li><a href="#stars" class="tab-item">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="#e6edf3">
+              <path
+                d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694Z">
+              </path>
+            </svg>
+            Stars <span class="tab-count">4</span>
+          </a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="nav-separator"></div>
+  <div class="layout">
+    <div class="profile-container">
+      <div class="profile-image">
+        <img src="assets/profile.jpg" alt="Profile Image" />
+      </div>
+      <div class="profile-section">
+        <h1 class="profile-name">John Zion G. Pabilando</h1>
+        <h2>Zion · he/him</h2>
+        <div class="follow-button">
+          <button class="btn-follow">Follow</button>
+        </div>
+        <p>Hi, I am John Zion G. Pabilando, BSIT student | Turning pixels into purposeful UI/UX experiences.</p>
+      </div>
+      <div class="follower_following">
+        <img src="assets/users.png" alt="User Icon" class="user-icon" />
+        <span><strong>1</strong> follower ·</span>
+        <span><strong>1</strong> following</span>
+      </div>
+      <div class="social-links">
+        <div class="social-item">
+          <img src="assets/facebook.png" alt="facebook Icon" class="social-link-icon" />
+          <a href="https://www.facebook.com/zion.pabilando" target="_blank">zion.pabilando</a>
+        </div>
+        <div class="social-item">
+          <img src="assets/insta.png" alt="instagram Icon" class="social-link-icon" />
+          <a href="https://www.instagram.com/pzycho.zii/" target="_blank">pzycho.zii</a>
+        </div>
+        <div class="social-item">
+          <img src="assets/linkedin.png" alt="linkedin Icon" class="social-link-icon" />
+          <a href="https://www.linkedin.com/in/zion-pabilando-1908853ba/" target="_blank">zionpabilando</a>
+        </div>
+      </div>
+    </div>
+    <div class="main-content">
+      <h2> Repositories </h2>
+      <div class="repo-grid">
+        <div class="repo-card">
+          <h3>Basic Payroll System with loan deduction</h3>
+          <p>Modular Python-based Payroll Management System designed to handle employee records, salary computations,
+            and tax deductions over a corporate year.</p>
+          <div class="repo-language">
+            <span class="dot python"></span>
+            <span>Python</span>
+          </div>
+        </div>
+        <div class="repo-card">
+          <h3>Rock Paper Scissors Game</h3>
+          <p>This project is a simple yet interactive web-based Rock Paper and Scissors game developed using PHP, HTML,
+            and CSS. It allows users to play against a computer opponent in real time, with the game logic handled on
+            the server side using PHP.</p>
+          <div class="repo-language">
+            <span class="dot php"></span>
+            <span>PHP</span>
+          </div>
+        </div>
+        <div class="repo-card">
+          <h3>3D Car Game</h3>
+          <p>This project is a 3D car game developed using GDevelop, a no-code game engine that focuses on event-based
+            logic. The game features smooth controls, responsive gameplay, and a simple yet engaging design where
+            players navigate a car through obstacles or challenges.</p>
+          <div class="repo-language">
+            <span class="dot gdevelop"></span>
+            <span>GDevelop</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gemini-chat" id="geminiChat">
+        <div class="gemini-messages" id="chatMessages"></div>
+
+        <div class="gemini-input-wrapper" id="geminiInputWrapper">
+          <textarea id="chatInput" class="gemini-input" placeholder="Ask Zion AI" rows="1"></textarea>
+          <button class="gemini-send-btn" id="chatSend" aria-label="Send message">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="chatbot.js"></script>
+</body>
+
+</html>

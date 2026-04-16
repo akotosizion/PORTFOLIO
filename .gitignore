@@ -1,0 +1,16 @@
+# IDE
+.vscode/
+
+# Dependencies
+node_modules/
+
+# Environment variables (local)
+.env
+
+# Old PHP backend (contains hardcoded API key)
+chat-api.php
+test-chat.php
+
+# OS files
+Thumbs.db
+.DS_Store
