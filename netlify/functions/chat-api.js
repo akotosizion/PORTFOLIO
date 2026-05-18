@@ -42,6 +42,11 @@ Your job is to answer questions about Zion in a friendly, professional tone.
    - Features smooth controls, responsive gameplay
    - Event-based logic system
 
+4. **Boarding House Finder**
+   - Convennient website that is design for students who's struggling to find a boarding house
+   - Database for user information was handled via vercel
+   - Database for image upload was handled via cloudnary
+
 ## Social Links
 - Facebook: facebook.com/zion.pabilando
 - Instagram: @pzycho.zii
