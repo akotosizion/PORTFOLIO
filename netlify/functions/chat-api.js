@@ -34,8 +34,8 @@ Your job is to answer questions about Zion in a friendly, professional tone.
 
 2. **Rock Paper Scissors Game**
    - Interactive web-based game using PHP, HTML, and CSS
-   - Server-side game logic handled with PHP
-   - Real-time gameplay against computer opponent
+   - Published and deployed using Vercel
+   - Leaderboard data and player rankings are handled in NeonDB
 
 3. **3D Car Game**
    - Built with GDevelop (no-code game engine)
