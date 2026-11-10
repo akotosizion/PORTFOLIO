@@ -7,7 +7,18 @@
   'use strict';
 
   // ── Configuration ──
-  const API_URL = '/.netlify/functions/chat-api';
+  let API_URL = '/.netlify/functions/chat-api';
+  if (typeof window !== 'undefined') {
+    if (window.location.protocol === 'file:') {
+      API_URL = 'http://localhost:3000/.netlify/functions/chat-api';
+    } else if (
+      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') &&
+      window.location.port !== '3000' &&
+      window.location.port !== '8888'
+    ) {
+      API_URL = 'http://localhost:3000/.netlify/functions/chat-api';
+    }
+  }
   const WELCOME_MESSAGE = "Hey there! 👋 I'm Zion's AI assistant. Ask me anything about his skills, projects, or experience!";
   const MAX_MESSAGES_PER_SESSION = 30;
 

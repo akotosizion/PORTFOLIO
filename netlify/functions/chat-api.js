@@ -2,6 +2,7 @@
  * Netlify Serverless Function — AI Chatbot Backend
  * Replaces chat-api.php — Connects to Groq API (Free Tier)
  * Uses Llama 3 model — fast, smart, and completely free
+ * Includes local fallback when API key is missing or offline
  */
 
 const MODEL = 'llama-3.3-70b-versatile';
@@ -43,9 +44,9 @@ Your job is to answer questions about Zion in a friendly, professional tone.
    - Event-based logic system
 
 4. **Boarding House Finder**
-   - Convennient website that is design for students who's struggling to find a boarding house
-   - Database for user information was handled via vercel
-   - Database for image upload was handled via cloudnary
+   - Convenient website designed for students struggling to find a boarding house
+   - Database for user information was handled via Vercel
+   - Database for image upload was handled via Cloudinary
 
 ## Social Links
 - Facebook: facebook.com/zion.pabilando
@@ -65,6 +66,53 @@ Your job is to answer questions about Zion in a friendly, professional tone.
 - If asked about topics unrelated to Zion, politely redirect the conversation
 - Do not use markdown formatting — keep it plain text for chat`;
 
+// Offline / Fallback knowledge base answers
+function getLocalFallbackResponse(query) {
+  const q = query.toLowerCase();
+
+  if (q.includes('skill') || q.includes('stack') || q.includes('tech') || q.includes('language') || q.includes('tool')) {
+    return "Zion is skilled in Python, PHP, HTML, CSS, JavaScript, and UI/UX Design. He also works with GDevelop for game development and Adobe Photoshop for visual design.";
+  }
+
+  if (q.includes('payroll')) {
+    return "The Basic Payroll System with Loan Deduction is a modular Python-based management system that handles employee records, salary computations, and tax/loan deductions.";
+  }
+
+  if (q.includes('car') || (q.includes('game') && q.includes('3d'))) {
+    return "Zion's 3D Car Game was built using GDevelop. It features smooth controls, responsive gameplay, and an event-based logic system. You can even play it live from the Projects section!";
+  }
+
+  if (q.includes('rock') || q.includes('paper') || q.includes('scissors') || q.includes('rps')) {
+    return "The Rock Paper Scissors Game is an interactive web game built with PHP, HTML, and CSS, deployed on Vercel with player leaderboards handled via NeonDB.";
+  }
+
+  if (q.includes('boarding') || q.includes('house') || q.includes('finder')) {
+    return "The Boarding House Finder is a web application designed to help students easily find accommodations. It handles user data via Vercel and photo uploads via Cloudinary.";
+  }
+
+  if (q.includes('project') || q.includes('portfolio') || q.includes('work') || q.includes('built')) {
+    return "Zion has built several notable projects:\n1. Basic Payroll System with Loan Deduction (Python)\n2. Rock Paper Scissors Game (PHP/CSS/HTML + NeonDB)\n3. 3D Car Game (GDevelop)\n4. Boarding House Finder (Vercel + Cloudinary)";
+  }
+
+  if (q.includes('cert') || q.includes('credential') || q.includes('license')) {
+    return "Zion is certified through Certiport (Pearson VUE) as an Adobe Certified Professional in Visual Design Using Adobe Photoshop and an IT Specialist in Networking.";
+  }
+
+  if (q.includes('contact') || q.includes('reach') || q.includes('social') || q.includes('facebook') || q.includes('insta') || q.includes('linkedin') || q.includes('email')) {
+    return "You can connect with Zion on LinkedIn (linkedin.com/in/zion-pabilando-1908853ba), Facebook (facebook.com/zion.pabilando), or Instagram (@pzycho.zii).";
+  }
+
+  if (q.includes('who') || q.includes('about') || q.includes('age') || q.includes('birthday') || q.includes('school') || q.includes('college') || q.includes('where') || q.includes('education')) {
+    return "John Zion G. Pabilando (Zion) is a 21-year-old BSIT student at Guagua National Colleges, living in San Fernando, Pampanga. He specializes in UI/UX and web development.";
+  }
+
+  if (q.includes('hi') || q.includes('hello') || q.includes('hey') || q.includes('sup') || q.includes('good morning') || q.includes('good afternoon')) {
+    return "Hello! 👋 I'm Zion's AI assistant. Ask me anything about Zion's skills, projects, certifications, or how to reach him!";
+  }
+
+  return "Zion is a BSIT student and UI/UX developer from Pampanga, Philippines. You can ask me about his projects (like the Payroll System or 3D Car Game), technical skills, or credentials!";
+}
+
 exports.handler = async function (event) {
   // Handle CORS preflight
   const headers = {
@@ -83,17 +131,6 @@ exports.handler = async function (event) {
       statusCode: 405,
       headers,
       body: JSON.stringify({ error: 'Only POST requests are allowed' }),
-    };
-  }
-
-  // Get API key from environment variable
-  const API_KEY = process.env.GROQ_API_KEY;
-  if (!API_KEY) {
-    console.error('GROQ_API_KEY environment variable is not set');
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({ error: 'Server configuration error' }),
     };
   }
 
@@ -127,6 +164,19 @@ exports.handler = async function (event) {
     };
   }
 
+  // Check API key from environment variable
+  const API_KEY = process.env.GROQ_API_KEY;
+  const isKeyMissingOrPlaceholder = !API_KEY || API_KEY.trim() === '' || API_KEY.includes('your_groq_api_key');
+
+  if (isKeyMissingOrPlaceholder) {
+    console.log('Using local fallback response (no valid GROQ_API_KEY set).');
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({ reply: getLocalFallbackResponse(userMessage) }),
+    };
+  }
+
   // Build messages array for Groq API (OpenAI-compatible format)
   const messages = [{ role: 'system', content: SYSTEM_PROMPT }];
 
@@ -156,12 +206,11 @@ exports.handler = async function (event) {
     const data = await response.json();
 
     if (!response.ok) {
-      const errorMsg = data?.error?.message || 'Unknown API error';
-      console.error('Groq API error:', errorMsg);
+      console.warn('Groq API error:', data?.error?.message, '— falling back to local responder.');
       return {
-        statusCode: 500,
+        statusCode: 200,
         headers,
-        body: JSON.stringify({ error: 'AI error: ' + errorMsg }),
+        body: JSON.stringify({ reply: getLocalFallbackResponse(userMessage) }),
       };
     }
 
@@ -173,17 +222,17 @@ exports.handler = async function (event) {
       };
     } else {
       return {
-        statusCode: 500,
+        statusCode: 200,
         headers,
-        body: JSON.stringify({ error: 'No response generated.' }),
+        body: JSON.stringify({ reply: getLocalFallbackResponse(userMessage) }),
       };
     }
   } catch (err) {
-    console.error('Fetch error:', err);
+    console.warn('Groq fetch error:', err.message, '— falling back to local responder.');
     return {
-      statusCode: 500,
+      statusCode: 200,
       headers,
-      body: JSON.stringify({ error: 'Failed to connect to AI service' }),
+      body: JSON.stringify({ reply: getLocalFallbackResponse(userMessage) }),
     };
   }
 };
