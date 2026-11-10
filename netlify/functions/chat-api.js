@@ -1,9 +1,14 @@
 /**
  * Netlify Serverless Function — AI Chatbot Backend
- * Connects to Groq API (Free Tier) — LLaMA 3.3 model
+ * Connects to Groq API with automatic model fallback
  */
 
-const MODEL = 'llama-3.3-70b-versatile';
+const MODELS = [
+  'openai/gpt-oss-120b',
+  'openai/gpt-oss-20b',
+  'llama-3.3-70b-versatile',
+  'llama-3.1-8b-instant'
+];
 
 const SYSTEM_PROMPT = `You are an AI assistant embedded in John Zion G. Pabilando's portfolio website.
 Your job is to answer questions about Zion in a friendly, professional tone.
@@ -26,7 +31,7 @@ Your job is to answer questions about Zion in a friendly, professional tone.
 - UI/UX Design
 - Web Development
 
-## Projects
+## Projects (Total of 4)
 1. **Basic Payroll System with Loan Deduction**
    - Modular Python-based Payroll Management System
    - Handles employee records, salary computations, and tax deductions over a corporate year
@@ -58,6 +63,7 @@ Your job is to answer questions about Zion in a friendly, professional tone.
 
 ## Rules for Responding
 - Always respond in a friendly, professional, and conversational tone
+- Understand conversational context from previous messages
 - If you don't know something about Zion, say so honestly
 - Keep responses concise but helpful (2-4 sentences for simple questions)
 - You can suggest the visitor connect on social media for more details
@@ -109,6 +115,48 @@ function getLocalFallbackResponse(query) {
   }
 
   return "Zion is a BSIT student and UI/UX developer from Pampanga, Philippines. You can ask me about his 4 projects (Payroll System, Rock Paper Scissors, 3D Car Game, and Boarding House Finder), his skills, or certifications!";
+}
+
+async function callGroqWithFallback(messages, apiKey) {
+  let lastError = null;
+
+  for (const model of MODELS) {
+    try {
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages,
+          temperature: 0.7,
+          max_tokens: 500,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.choices?.[0]?.message?.content) {
+        return { success: true, reply: data.choices[0].message.content };
+      }
+
+      const errorMsg = data?.error?.message || response.statusText || 'Model failed';
+      console.warn(`Groq model ${model} failed: ${errorMsg}`);
+      lastError = errorMsg;
+
+      // If invalid API key, don't keep trying models
+      if (response.status === 401 || errorMsg.includes('Invalid API Key')) {
+        break;
+      }
+    } catch (err) {
+      console.warn(`Fetch error with model ${model}:`, err.message);
+      lastError = err.message;
+    }
+  }
+
+  return { success: false, error: lastError };
 }
 
 exports.handler = async function (event) {
@@ -174,7 +222,7 @@ exports.handler = async function (event) {
       statusCode: 200,
       headers,
       body: JSON.stringify({
-        reply: `⚠️ [Offline Mode — GROQ_API_KEY is not set]:\n\n${getLocalFallbackResponse(userMessage)}\n\n(Tip: Add your free Groq API key from console.groq.com to enable live AI chat!)`
+        reply: `⚠️ [Offline Mode — GROQ_API_KEY is not set]:\n\n${getLocalFallbackResponse(userMessage)}`
       }),
     };
   }
@@ -192,57 +240,23 @@ exports.handler = async function (event) {
 
   messages.push({ role: 'user', content: userMessage });
 
-  // Call Groq API
-  try {
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        messages,
-        temperature: 0.7,
-        max_tokens: 500,
-      }),
-    });
+  // Call Groq API with model fallback
+  const result = await callGroqWithFallback(messages, API_KEY);
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      const errorMsg = data?.error?.message || response.statusText || 'API error';
-      console.error('Groq API error:', errorMsg);
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({
-          reply: `⚠️ Groq AI Error (${errorMsg}):\n\n${getLocalFallbackResponse(userMessage)}`
-        }),
-      };
-    }
-
-    if (data.choices?.[0]?.message?.content) {
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({ reply: data.choices[0].message.content }),
-      };
-    } else {
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({ reply: getLocalFallbackResponse(userMessage) }),
-      };
-    }
-  } catch (err) {
-    console.error('Groq fetch error:', err.message);
+  if (result.success) {
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({
-        reply: `⚠️ Connection error to AI service (${err.message}):\n\n${getLocalFallbackResponse(userMessage)}`
-      }),
+      body: JSON.stringify({ reply: result.reply }),
     };
   }
+
+  // If all models failed
+  return {
+    statusCode: 200,
+    headers,
+    body: JSON.stringify({
+      reply: `⚠️ Groq AI Error (${result.error}):\n\n${getLocalFallbackResponse(userMessage)}`
+    }),
+  };
 };
